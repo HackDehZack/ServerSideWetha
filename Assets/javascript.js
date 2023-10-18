@@ -1,70 +1,166 @@
-const apiKey = '3f5eeb3cccfc79369776a3c555cdb288';
+const API_KEY = '3f5eeb3cccfc79369776a3c555cdb288';
 
-// Function to fetch weather data
-async function fetchWeatherData(city) {
-  try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      throw new Error('Unable to fetch weather data');
-    }
-  } catch (error) {
-    console.error('Error fetching weather data:', error);
-    throw error;
+// Function to fetch current weather using the OpenWeatherMap API
+function fetchCurrentWeather(city) {
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
+
+  return fetch(apiUrl)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Unable to fetch weather data for the requested city.');
+      }
+    })
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+}
+
+// Function to fetch forecast data using the OpenWeatherMap API
+function fetchForecast(city) {
+  const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
+
+  return fetch(apiUrl)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Unable to fetch forecast data for the requested city.');
+      }
+    })
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+}
+
+function saveSearchHistory(city) {
+  let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+  // Check if city already exists in search history
+  if (!searchHistory.includes(city)) {
+    searchHistory.push(city);
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
   }
 }
 
-// Implement the search functionality
-function handleSearch(event) {
-  event.preventDefault();
-  const searchInput = document.getElementById('search-input');
-  const city = searchInput.value.trim();
+// Function to load search history from local storage
+function loadSearchHistory() {
+  const searchHistory = JSON.parse(localStorage.getItem('searchHistory'));
 
-  if (city) {
-    fetchWeatherData(city)
-      .then((data) => {
-        // Process the retrieved data and update the HTML elements accordingly
-        displayCurrentWeather({
-          cityName: data.name,
-          date: new Date().toDateString(),
-          iconUrl: `https://openweathermap.org/img/w/${data.weather[0].icon}.png`,
-          temperature: Math.round(data.main.temp - 273.15),
-          humidity: data.main.humidity,
-          windSpeed: data.wind.speed,
-        });
-        // Show the 5-day forecast
-        // Update the search history
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        // Display an error message to the user
-        displayErrorMessage('Failed to fetch weather data. Please try again.');
+  if (searchHistory) {
+    const historyList = document.getElementById('history-list');
+    historyList.innerHTML = '';
+
+    searchHistory.forEach((city) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = city;
+
+      // Add click event listener to search history item
+      listItem.addEventListener('click', (event) => {
+        document.getElementById('search-input').value = city;
+        handleFormSubmit(event);
       });
+
+      historyList.appendChild(listItem);
+    });
   }
-
-  searchInput.value = '';
-}
-
-// Function to display an error message
-function displayErrorMessage(message) {
-  const errorContainer = document.getElementById('error-container');
-  errorContainer.textContent = message;
-  errorContainer.style.display = 'block';
 }
 
 // Function to display current weather conditions
-function displayCurrentWeather(weatherData) {
-  // Update the HTML elements with the relevant weather data
-  document.getElementById('city-name').textContent = weatherData.cityName;
-  document.getElementById('current-date').textContent = weatherData.date;
-  document.getElementById('weather-icon').src = weatherData.iconUrl;
-  document.getElementById('temperature').textContent = `Temperature: ${weatherData.temperature}°C`;
-  document.getElementById('humidity').textContent = `Humidity: ${weatherData.humidity}%`;
-  document.getElementById('wind-speed').textContent = `Wind Speed: ${weatherData.windSpeed}m/s`;
+function displayCurrentWeather(data) {
+  const cityName = document.getElementById('city-name');
+  const currentDate = document.getElementById('current-date');
+  const weatherIcon = document.getElementById('weather-icon');
+  const temperature = document.getElementById('temperature');
+  const humidity = document.getElementById('humidity');
+  const windSpeed = document.getElementById('wind-speed');
+
+  cityName.textContent = data.name;
+  currentDate.textContent = new Date().toLocaleDateString();
+  weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+  temperature.textContent = `Temperature: ${data.main.temp}°C`;
+  humidity.textContent = `Humidity: ${data.main.humidity}%`;
+  windSpeed.textContent = `Wind Speed: ${data.wind.speed} m/s`;
 }
 
-// Add an event listener to the form submit event
-const searchForm = document.getElementById('search-form');
-searchForm.addEventListener('submit', handleSearch);
+// Function to display 5-day forecast
+function displayForecast(data) {
+  const forecastContainer = document.getElementById('forecast-container');
+  forecastContainer.innerHTML = '';
+
+  const forecasts = data.list.slice(0, 5); // Get only the first 5 forecasts
+
+  forecasts.forEach((forecast) => {
+    const forecastCard = document.createElement('div');
+    forecastCard.classList.add('forecast-card');
+
+    const forecastDate = document.createElement('p');
+    forecastDate.classList.add('forecast-date');
+    forecastDate.textContent = new Date(forecast.dt * 1000).toLocaleDateString();
+
+    const forecastIcon = document.createElement('img');
+    forecastIcon.classList.add('forecast-icon');
+    forecastIcon.src = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
+
+    const forecastInfo = document.createElement('div');
+    forecastInfo.classList.add('forecast-info');
+
+    const forecastTemperature = document.createElement('p');
+    forecastTemperature.classList.add('forecast-temperature');
+    forecastTemperature.textContent = `Temperature: ${forecast.main.temp}°C`;
+
+    const forecastHumidity = document.createElement('p');
+    forecastHumidity.classList.add('forecast-humidity');
+    forecastHumidity.textContent = `Humidity: ${forecast.main.humidity}%`;
+
+    const forecastWindSpeed = document.createElement('p');
+    forecastWindSpeed.classList.add('forecast-wind-speed');
+    forecastWindSpeed.textContent = `Wind Speed: ${forecast.wind.speed} m/s`;
+
+    forecastInfo.appendChild(forecastTemperature);
+    forecastInfo.appendChild(forecastHumidity);
+    forecastInfo.appendChild(forecastWindSpeed);
+
+    forecastCard.appendChild(forecastDate);
+    forecastCard.appendChild(forecastIcon);
+    forecastCard.appendChild(forecastInfo);
+
+    forecastContainer.appendChild(forecastCard);
+  });
+}
+  
+  // Function to handle form submission
+  function handleFormSubmit(event) {
+    event.preventDefault();
+    const city = document.getElementById('search-input').value;
+  
+    fetchCurrentWeather(city)
+      .then((data) => {
+        displayCurrentWeather(data);
+        saveSearchHistory(city);
+      })
+      .catch((error) => {
+        showError(error.message);
+      });
+  
+    fetchForecast(city)
+      .then((data) => {
+        displayForecast(data);
+      })
+      .catch((error) => {
+        showError(error.message);
+      });
+  
+    document.getElementById('search-input').value = '';
+  }
+  
+  // Function to initialize the weather dashboard
+  function initializeWeatherDashboard() {
+    loadSearchHistory();
+  
+    const searchForm = document.getElementById('search-form');
+    searchForm.addEventListener('submit', handleFormSubmit);
+  }
+  
+  initializeWeatherDashboard();

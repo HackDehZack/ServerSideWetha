@@ -1,41 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="Assets/styles.css">
-  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <title>ServerSideWetha</title>
 </head>
+
 <body>
   <header>
-    <h1>Weather Dashboard</h1>
+    <h1>ServerSideWetha</h1>
     <form id="search-form">
       <input type="text" id="search-input" placeholder="Enter a city">
       <button type="submit">Search</button>
     </form>
+    <div class="weather-icons">
+      <img src="assets/sunny-icon.png" alt="Sunny" class="weather-icon" id="sunny-icon">
+      <img src="assets/cloudy-icon.png" alt="Cloudy" class="weather-icon" id="cloudy-icon">
+      <img src="assets/rainy-icon.png" alt="Rainy" class="weather-icon" id="rainy-icon">
+      <img src="assets/snowy-icon.png" alt="Snowy" class="weather-icon" id="snowy-icon">
+      <img src="assets/stormy-icon.png" alt="Stormy" class="weather-icon" id="stormy-icon">
+    </div>
   </header>
-  
+
   <main>
     <section id="current-weather">
-      <h2 id="city-name"></h2>
-      <p id="current-date"></p>
-      <img id="weather-icon" src="" alt="">
-      <p id="temperature"></p>
-      <p id="humidity"></p>
-      <p id="wind-speed"></p>
+      <h2 id="city-name">City</h2>
+      <p id="current-date">Date</p>
+      <div class="weather-info">
+        <p id="temperature">Temperature</p>
+        <p id="humidity">Humidity</p>
+        <p id="wind-speed">Wind Speed</p>
+      </div>
     </section>
-    
+
+    <div id="error-container"></div>
+
     <section id="forecast">
       <h3>5-Day Forecast:</h3>
-      <div id="forecast-cards"></div>
+      <div id="forecast-container">
+        <div class="forecast-card">
+          <p class="forecast-date">Date</p>
+          <div class="forecast-info">
+            <p class="forecast-temperature">Temperature</p>
+            <p class="forecast-humidity">Humidity</p>
+            <p class="forecast-wind-speed">Wind Speed</p>
+          </div>
+        </div>
+      </div>
     </section>
-    
+
     <section id="search-history">
       <h3>Search History:</h3>
-      <ul id="history-list"></ul>
+      <ul id="history-list">
+        <li>City</li>
+      </ul>
     </section>
+
   </main>
-  
-  <script src="Assets/javascript.js"></script>
+
+  <script src="assets/javascript.js"></script>
 </body>
+
 </html>
