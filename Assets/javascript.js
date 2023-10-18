@@ -129,7 +129,6 @@ function displayForecast(data) {
     forecastContainer.appendChild(forecastCard);
   });
 }
-
   // Function to handle form submission
   function handleFormSubmit(event) {
     event.preventDefault();
