@@ -78,7 +78,7 @@ function displayCurrentWeather(data) {
 
   cityName.textContent = data.name;
   currentDate.textContent = new Date().toLocaleDateString();
-  weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+  weatherIcon.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
   temperature.textContent = `Temperature: ${data.main.temp}°C`;
   humidity.textContent = `Humidity: ${data.main.humidity}%`;
   windSpeed.textContent = `Wind Speed: ${data.wind.speed} m/s`;
@@ -101,7 +101,7 @@ function displayForecast(data) {
 
     const forecastIcon = document.createElement('img');
     forecastIcon.classList.add('forecast-icon');
-    forecastIcon.src = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
+    forecastIcon.src = `http://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
 
     const forecastInfo = document.createElement('div');
     forecastInfo.classList.add('forecast-info');
@@ -129,7 +129,7 @@ function displayForecast(data) {
     forecastContainer.appendChild(forecastCard);
   });
 }
-  
+
   // Function to handle form submission
   function handleFormSubmit(event) {
     event.preventDefault();
