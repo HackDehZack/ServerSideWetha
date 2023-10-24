@@ -1,57 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/styles.css">
-  <title>ServerSideWetha</title>
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="Assets/styles.css">
 </head>
-
 <body>
   <header>
-    <h1>ServerSideWetha</h1>
+    <h1>Weather Dashboard</h1>
     <form id="search-form">
-      <input type="text" id="search-input" placeholder="Enter a city">
+      <input type="text" id="city-input" placeholder="Enter a city">
       <button type="submit">Search</button>
     </form>
-    <div class="weather-icons">
-      <img src="assets/Images/sunny-icon.png" alt="Sunny" class="weather-icon" id="sunny-icon">
-      <img src="assets/Images/Cloudy-icon.png" alt="Cloudy" class="weather-icon" id="cloudy-icon">
-      <img src="assets/Images/rainy-icon.png" alt="Rainy" class="weather-icon" id="rainy-icon">
-      <img src="assets/Images/snowy-icon.png" alt="Snowy" class="weather-icon" id="snowy-icon">
-      <img src="assets/Images/stormy-icon.png" alt="Stormy" class="weather-icon" id="stormy-icon">
-    </div>
   </header>
 
-  <main>
+  <main id="weather-dashboard">
     <section id="current-weather">
-      <h2 id="city-name">City</h2>
-      <p id="current-date">Date</p>
-      <div class="weather-info">
-        <p id="temperature">Temperature</p>
-        <p id="humidity">Humidity</p>
-        <p id="wind-speed">Wind Speed</p>
-      </div>
+      <h2>Current Weather</h2>
+      <div id="city-name"></div>
+      <div id="date"></div>
+      <div id="weather-icon"></div>
+      <div id="temperature"></div>
+      <div id="humidity"></div>
+      <div id="wind-speed"></div>
     </section>
-
-    <div id="error-container"></div>
 
     <section id="forecast">
-      <h3>5-Day Forecast:</h3>
-      <div id="forecast-container">
-      </div>
+      <h2>5-Day Forecast</h2>
+      <div id="forecast-container"></div>
     </section>
-
-    <section id="search-history">
-      <h3>Search History:</h3>
-      <ul id="history-list">
-      </ul>
-    </section>
-
   </main>
 
-  <script src="assets/javascript.js"></script>
-</body>
+  <aside id="search-history">
+    <h2>Search History</h2>
+    <ul id="history-list"></ul>
+  </aside>
 
-</html>
+  <script src="Assets/javascript.js"></script>
+  <html/> 
