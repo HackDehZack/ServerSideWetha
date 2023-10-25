@@ -8,16 +8,18 @@
 </head>
 <body>
   <header>
-    <h1>Weather Dashboard</h1>
-    <form id="search-form">
-      <input type="text" id="city-input" placeholder="Enter a city">
-      <button type="submit">Search</button>
-    </form>
+    <div class="header-container">
+      <h1 class="title">Weather Dashboard</h1>
+      <form id="search-form">
+        <input type="text" id="city-input" class="search-input" placeholder="Enter a city">
+        <button type="submit" class="search-button">Search</button>
+      </form>
+    </div>
   </header>
 
   <main id="weather-dashboard">
     <section id="current-weather">
-      <h2>Current Weather</h2>
+      <h2 class="section-title">Current Weather</h2>
       <div id="city-name"></div>
       <div id="date"></div>
       <div id="temperature"></div>
@@ -26,15 +28,19 @@
     </section>
 
     <section id="forecast">
-      <h2>5-Day Forecast</h2>
+      <h2 class="section-title">5-Day Forecast</h2>
       <div id="forecast-container"></div>
     </section>
   </main>
 
+  <div id="weather-icon"></div>
+  <div class="weather-icon"></div>
+
   <aside id="search-history">
-    <h2>Search History</h2>
-    <ul id="history-list"></ul>
+    <h2 class="section-title">Search History</h2>
+    <ul id="history-list" class="history-list"></ul>
   </aside>
 
   <script src="Assets/javascript.js"></script>
-  <html/> 
+</body>
+</html>

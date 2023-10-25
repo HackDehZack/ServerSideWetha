@@ -2,7 +2,6 @@ const searchForm = document.getElementById("search-form");
 const cityInput = document.getElementById("city-input");
 const cityNameElem = document.getElementById("city-name");
 const dateElem = document.getElementById("date");
-const weatherIconElem = document.getElementById("weather-icon");
 const temperatureElem = document.getElementById("temperature");
 const humidityElem = document.getElementById("humidity");
 const windSpeedElem = document.getElementById("wind-speed");
@@ -18,7 +17,6 @@ function handleSearch(event) {
     clearWeatherData();
     getWeather(city);
     saveSearchToLocalStorage(city);
-    displaySearchHistory();
   }
 }
 
@@ -48,7 +46,6 @@ function handleResponse(response) {
 function displayCurrentWeather(data) {
   cityNameElem.textContent = "City: " + data.name;
   dateElem.textContent = "Date: " + new Date().toLocaleDateString();
-  weatherIconElem.innerHTML = '<img src="/assets/weather-icons/' + data.weather[0].icon + '.png" alt="Weather Icon">';
   temperatureElem.textContent = "Temperature: " + data.main.temp + " °C";
   humidityElem.textContent = "Humidity: " + data.main.humidity + "%";
   windSpeedElem.textContent = "Wind Speed: " + data.wind.speed + " m/s";
@@ -60,7 +57,6 @@ function displayForecast(data) {
 
   fiveDayForecast.forEach(function (forecast) {
     const date = forecast.dt_txt.split(" ")[0];
-    const icon = forecast.weather[0].icon;
     const temperature = forecast.main.temp;
     const windSpeed = forecast.wind.speed;
     const humidity = forecast.main.humidity;
@@ -69,7 +65,6 @@ function displayForecast(data) {
     forecastCard.classList.add("forecast-card");
     forecastCard.innerHTML = `
       <div class="date">${date}</div>
-      <div class="weather-icon"><img src="/assets/weather-icons/${icon}.png" alt="Weather Icon"></div>
       <div class="temperature">Temperature: ${temperature} °C</div>
       <div class="wind-speed">Wind Speed: ${windSpeed} m/s</div>
       <div class="humidity">Humidity: ${humidity}%</div>
@@ -86,7 +81,6 @@ function handleError(error) {
 function clearWeatherData() {
   cityNameElem.textContent = "";
   dateElem.textContent = "";
-  weatherIconElem.innerHTML = "";
   temperatureElem.textContent = "";
   humidityElem.textContent = "";
   windSpeedElem.textContent = "";
@@ -95,17 +89,106 @@ function clearWeatherData() {
 
 function saveSearchToLocalStorage(city) {
   let searches = JSON.parse(localStorage.getItem("searches")) || [];
-  searches.push(city);
-  localStorage.setItem("searches", JSON.stringify(searches));
+  
+  // Ensure the city does not already exist in the history
+  if (!searches.includes(city)) {
+    searches.push(city);
+    localStorage.setItem("searches", JSON.stringify(searches));
+  }
+  
+  // Refresh the displayed search history
+  displaySearchHistory();
 }
 
 function displaySearchHistory() {
+  // Clear existing history display
   searchHistoryContainer.innerHTML = "";
+
+  // Get searches from local storage
   const searches = JSON.parse(localStorage.getItem("searches")) || [];
+
+  // Create and append a div for each search history item
   searches.forEach(function (search) {
     const historyItem = document.createElement("div");
     historyItem.classList.add("search-history-item");
     historyItem.textContent = search;
+    historyItem.addEventListener("click", function() {
+      cityInput.value = search;
+      handleSearch({ preventDefault: () => {} });
+    });
     searchHistoryContainer.appendChild(historyItem);
   });
 }
+
+// Initial display of search history on page load
+displaySearchHistory();
+
+searches.forEach(function (search) {
+  const historyItem = document.createElement("li");
+  historyItem.classList.add("search-history-item");
+  historyItem.textContent = search;
+  historyItem.addEventListener("click", function() {
+    cityInput.value = search;
+    handleSearch({ preventDefault: () => {} });
+  });
+  searchHistoryContainer.appendChild(historyItem);
+});
+
+function displaySearchHistory() {
+  // Clear existing history display
+  searchHistoryContainer.innerHTML = "";
+
+  // Get searches from local storage
+  let searches = JSON.parse(localStorage.getItem("searches")) || [];
+
+  // Limit the display to the last 5 searches
+  searches = searches.slice(-5);
+
+  // Create and append a div for each search history item
+  searches.forEach(function (search) {
+    const historyItem = document.createElement("li");
+    historyItem.classList.add("search-history-item");
+    historyItem.textContent = search;
+    historyItem.addEventListener("click", function() {
+      cityInput.value = search;
+      handleSearch({ preventDefault: () => {} });
+    });
+    searchHistoryContainer.appendChild(historyItem);
+  });
+}
+
+
+const weatherIconElem = document.getElementById("weather-icon");
+function displayCurrentWeather(data) {
+  cityNameElem.textContent = "City: " + data.name;
+  dateElem.textContent = "Date: " + new Date().toLocaleDateString();
+  temperatureElem.textContent = "Temperature: " + data.main.temp + " °C";
+  humidityElem.textContent = "Humidity: " + data.main.humidity + "%";
+  windSpeedElem.textContent = "Wind Speed: " + data.wind.speed + " m/s";
+
+  // Display the weather icon based on the weather condition
+  let weatherCondition = data.weather[0].main.toLowerCase();
+  weatherIconElem.innerHTML = `<img src="Pictures/${weatherCondition}-icon.png" alt="${weatherCondition}">`
+}
+
+fiveDayForecast.forEach(function (forecast) {
+  const date = forecast.dt_txt.split(" ")[0];
+  const temperature = forecast.main.temp;
+  const windSpeed = forecast.wind.speed;
+  const humidity = forecast.main.humidity;
+  const weatherCondition = forecast.weather[0].main.toLowerCase();
+
+  const forecastCard = document.createElement("div");
+  forecastCard.classList.add("forecast-card");
+  forecastCard.innerHTML = `
+    <div class="date">${date}</div>
+    <div class="temperature">Temperature: ${temperature} °C</div>
+    <div class="wind-speed">Wind Speed: ${windSpeed} m/s</div>
+    <div class="humidity">Humidity: ${humidity}%</div>
+    <div class="weather-icon">
+      <img src="Pictures/${weatherCondition}-icon.png" alt="${weatherCondition}">
+    </div>
+  `;
+
+  forecastContainer.appendChild(forecastCard);
+});
