@@ -159,6 +159,8 @@ function displaySearchHistory() {
 
 
 const weatherIconElem = document.getElementById("weather-icon");
+
+
 function displayCurrentWeather(data) {
   cityNameElem.textContent = "City: " + data.name;
   dateElem.textContent = "Date: " + new Date().toLocaleDateString();
@@ -166,11 +168,19 @@ function displayCurrentWeather(data) {
   humidityElem.textContent = "Humidity: " + data.main.humidity + "%";
   windSpeedElem.textContent = "Wind Speed: " + data.wind.speed + " m/s";
 
-  // Display the weather icon based on the weather condition
-  let weatherCondition = data.weather[0].main.toLowerCase();
-  weatherIconElem.innerHTML = `<img src="Pictures/${weatherCondition}-icon.png" alt="${weatherCondition}">`
-}
+  // Hide all icons
+  const icons = ["clear", "clouds", "rain", "snow", "thunderstorm"];
+  icons.forEach(icon => {
+    document.getElementById(icon + "-icon").style.display = "none";
+  });
 
+  // Display the correct icon based on the weather condition
+  let weatherCondition = data.weather[0].main.toLowerCase();
+  let icon = document.getElementById(weatherCondition + "-icon");
+  if (icon) {
+    icon.style.display = "block";
+  }
+}
 fiveDayForecast.forEach(function (forecast) {
   const date = forecast.dt_txt.split(" ")[0];
   const temperature = forecast.main.temp;
