@@ -137,3 +137,26 @@ footer {
   padding: 20px;
   text-align: center;
 }
+
+img.your-image-class {
+  /* Width and auto height */
+  width: 150px;
+  height: auto;
+
+  /* Add a border */
+  border: 3px solid #333;
+
+  /* Rounded corners */
+  border-radius: 10px;
+
+  /* Box shadow for a 3D effect */
+  box-shadow: 10px 10px 5px #888;
+  
+  /* Transition effect for hover */
+  transition: transform .2s;
+}
+
+/* Scale the image up slightly when hovered over */
+img.your-image-class:hover {
+  transform: scale(1.1);
+}
