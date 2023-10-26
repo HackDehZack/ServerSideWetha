@@ -10,43 +10,43 @@
   <header>
     <div class="header-container">
       <h1 class="title">Weather Dashboard</h1>
+    </div>
+  </header>
+
+  <div id="main-container">
+    <aside id="search-section">
       <form id="search-form">
         <input type="text" id="city-input" class="search-input" placeholder="Enter a city">
         <button type="submit" class="search-button">Search</button>
       </form>
-    </div>
-  </header>
 
-  <main id="weather-dashboard">
-    <section id="current-weather">
-      <h2 class="section-title">Current Weather</h2>
-      <div id="city-name"></div>
-      <div id="date"></div>
-      <div id="temperature"></div>
-      <div id="humidity"></div>
-      <div id="wind-speed"></div>
-    </section>
+      <div id="search-history">
+        <h2 class="section-title">Search History</h2>
+        <ul id="history-list" class="history-list"></ul>
+      </div>
+    </aside>
 
-    <section id="forecast">
-      <h2 class="section-title">5-Day Forecast</h2>
-      <div id="forecast-container"></div>
-    </section>
-  </main>
+    <main id="weather-dashboard">
+      <section id="current-weather">
+        <h2 class="section-title">Current Weather</h2>
+        <div id="city-name"></div>
+        <div id="date"></div>
+        <div id="temperature"></div>
+        <div id="humidity"></div>
+        <div id="wind-speed"></div>
+        <div id="weather-icon"></div> <!-- Weather icon for current weather here -->
+      </section>
 
-  <div id="weather-icon"></div>
-  <div class="weather-icon"></div>
+      <section id="forecast">
+        <h2 class="section-title">5-Day Forecast</h2>
+        <div id="forecast-container"></div>
+      </section>
+    </main>
+  </div>
 
-  <img id="clear-icon" src="Pictures/clear-icon.png" style="display: none;">
-  <img id="clouds-icon" src="Pictures/cloudy-icon.png" style="display: none;">
-  <img id="rain-icon" src="Pictures/rainy-icon.png" style="display: none;">
-  <img id="snow-icon" src="Pictures/snowy-icon.png" style="display: none;">
-  <img id="thunderstorm-icon" src="Pictures/thunderstorm-icon.png" style="display: none;">
-
-
-  <aside id="search-history">
-    <h2 class="section-title">Search History</h2>
-    <ul id="history-list" class="history-list"></ul>
-  </aside>
+  <footer>
+    Website created by: Joel Zackaire Koford
+  </footer>
 
   <script src="Assets/javascript.js"></script>
 </body>
