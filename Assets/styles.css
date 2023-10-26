@@ -160,3 +160,26 @@ img.your-image-class {
 img.your-image-class:hover {
   transform: scale(1.1);
 }
+
+
+
+
+
+
+
+/* header rain img*/
+header {
+  /* Set the height of the header */
+  height: 200px;
+
+  /* Use the rain gif as a background image */
+  background-image: url(/ServerSideWetha/Pictures/rainheader-SERVERSIDEWETHA.gif);
+
+  /* Center the text and set other text properties */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  text-shadow: 2px 2px 4px #000000;
+}
+
